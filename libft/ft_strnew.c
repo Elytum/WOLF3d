@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/05 16:23:01 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/05 16:55:47 by pfournet         ###   ########.fr       */
+/*   Created: 2014/11/06 08:18:03 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/07 05:44:53 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 char	*ft_strnew(size_t size)
 {
-	return ((char *)ft_memalloc(size));
+	return (ft_memalloc(size + 1));
 }

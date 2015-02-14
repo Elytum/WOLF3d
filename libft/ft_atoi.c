@@ -3,53 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/05 10:04:44 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/12 15:46:01 by paul             ###   ########.fr       */
+/*   Created: 2014/11/03 20:20:13 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/10 18:11:29 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		ft_number(char const *str, int i, int *number)
+int		ft_atoi(const char *str)
 {
-	int is_number;
+	int	value;
+	int	sign;
 
-	is_number = 1;
-	while (str[i] && is_number)
+	sign = 1;
+	if (!str)
+		return (0);
+	while (ft_isspace(str[0]) || str[0] == '\v' ||
+			str[0] == '\f' || str[0] == '\r')
+		str++;
+	if (str[0] == '+')
+		str++;
+	else if (str[0] == '-')
 	{
-		if ((str[i] >= '0' && str[i] <= '9'))
-		{
-			*number += str[i] - '0';
-			if (str[i + 1] >= '0' && str[i + 1] <= '9')
-				*number *= 10;
-		}
-		else
-			is_number = 0;
-		i++;
+		sign = -1;
+		str++;
 	}
-}
-
-int				ft_atoi(const char *str)
-{
-	int		i;
-	int		is_neg;
-	int		number;
-
-	is_neg = 0;
-	i = 0;
-	number = 0;
-	while ((str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
-				|| str[i] == '\f' || str[i] == '\r' || str[i] == '\v'))
-		i++;
-	if (str[i] == '-')
+	value = 0;
+	while (str[0] && ft_isdigit(str[0]))
 	{
-		is_neg = 1;
-		i++;
+		value = value * 10 + str[0] - '0';
+		str++;
 	}
-	else if (str[i] == '+')
-		i++;
-	ft_number(str, i, &number);
-	return (is_neg ? -number : number);
+	return (value * sign);
 }

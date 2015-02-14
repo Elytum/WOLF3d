@@ -103,7 +103,6 @@ int			ft_click(int button, int x, int y, t_env *e)
 		ft_raylen(e);
 		if (e->map[e->mapy][e->mapx] > '1' && y < e->drawend && y > e->drawstart)
 			e->map[e->mapy][e->mapx] = '0';
-		//ft_update_img(e, ft_raycaster);
 	}
 	return (0);
 }

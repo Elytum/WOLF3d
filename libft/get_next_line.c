@@ -3,83 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/02 12:55:45 by pfournet          #+#    #+#             */
-/*   Updated: 2014/12/02 18:58:27 by pfournet         ###   ########.fr       */
+/*   Created: 2013/12/02 14:33:16 by achazal           #+#    #+#             */
+/*   Updated: 2015/01/03 01:45:39 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "get_next_line.h"
+#include "includes/get_next_line.h"
 
-t_lst				*get_buff_fd(int fd, t_lst *list)
+static char			*ft_strcdup(const char *str, char c)
 {
-	while (list)
-	{
-		if (list->fd == fd)
-			return (list);
-		list = list->next;
-	}
-	if ((list = (t_lst*)malloc(sizeof(t_lst))) == NULL)
-		return (NULL);
-	if ((list->buf = (char*)ft_memalloc(BUFF + 1)) == NULL)
-		return (NULL);
-	list->fd = fd;
-	return (list);
+	register char	*strnew;
+	register char	*ptr;
+
+	strnew = (char *)malloc(sizeof(char) * ft_strlen(str) + 1);
+	ptr = strnew;
+	while (*str && *str != c)
+		*ptr++ = *str++;
+	*ptr = '\0';
+	return (strnew);
 }
 
-static int			ft_gnl_cut(int fd, char **line, char **buf, char *pos)
+static int			ft_get_single_line(int fd, char **memory)
 {
-	int		ret;
+	register char	*tmp;
+	register char	*buff;
+	register int	re;
 
-	*line = ft_strdup(*buf);
-	while (!pos)
+	buff = (char *)ft_memalloc(sizeof(char) * (BUFF_SIZE + 1));
+	while (!ft_strchr(*memory, '\n'))
 	{
-		if ((ret = read(fd, *buf, BUFF)) < 0)
-			return (-1);
-		if ((pos = ft_strchr(*buf, '\n')) == NULL && !ret)
-			return ((*buf)[0] = 0);
-		else if (pos)
+		ft_strclr(buff);
+		if ((re = read(fd, buff, BUFF_SIZE)) == -1)
+			return (re);
+		if (re == 0)
 		{
-			(*buf)[ret] = ret ? 0 : (*buf)[ret];
-			pos[0] = 0;
-			*line = ft_strjoin(*line, *buf);
-			ft_strcpy(*buf, pos + 1);
+			free(buff);
+			return (0);
 		}
-		else
-		{
-			(*buf)[ret] = ret ? 0 : (*buf)[ret];
-			*line = ft_strjoin(*line, *buf);
-			(*buf)[0] = 0;
-		}
+		tmp = ft_strjoin(*memory, buff);
+		free(*memory);
+		*memory = tmp;
 	}
-	return (*line ? 1 : -1);
+	free(buff);
+	return (1);
 }
 
-int					get_next_line(int const fd, char **line)
+static int			ft_init(char ***memory, int fd, char ***line)
 {
-	static t_lst	*begin_list;
-	t_lst			*list;
-	char			*pos;
-	int				ret;
+	register int	value;
 
-	if (!begin_list)
-		if ((begin_list = get_buff_fd(fd, begin_list)) == NULL)
-			return (-1);
-	if ((list = get_buff_fd(fd, begin_list)) == NULL)
+	if (!*line)
 		return (-1);
-	pos = ft_strchr(list->buf, '\n');
-	if (pos)
+	if (!*memory)
+		*memory = (char **)malloc(sizeof(char *) * 1025);
+	if ((value = ft_get_single_line(fd, &((*memory)[fd]))) == -1)
+		return (-1);
+	if (!(*(*memory)[fd]) && value == 0)
 	{
-		*pos = 0;
-		*line = ft_strdup(list->buf);
-		ft_strcpy(list->buf, pos + 1);
-		return (*line ? 1 : -1);
+		**line = ft_strdup("");
+		return (0);
 	}
-	else
-		ret = ft_gnl_cut(fd, line, &list->buf, NULL);
-	if (ret == -1)
-		return (-1);
-	return (ret ? 1 : ft_strlen(*line) != 0);
+	return (1);
+}
+
+int					get_next_line(int fd, char **line)
+{
+	static char		**memory = NULL;
+	register char	*tmp;
+	register char	*ptr;
+	register int	value;
+
+	if ((value = ft_init(&memory, fd, &line)) <= 0)
+		return (value);
+	ptr = ft_strchr((memory[fd]), '\n');
+	if (ptr + 1 == '\0')
+		*ptr = '\0';
+	if (!ptr || ptr + 1 == '\0')
+	{
+		*line = (memory[fd]);
+		(memory[fd]) = NULL;
+		return ((*(*line)) ? 1 : 0);
+	}
+	*line = ft_strcdup((memory[fd]), '\n');
+	tmp = ft_strdup(ptr + 1);
+	free((memory[fd]));
+	(memory[fd]) = tmp;
+	return (1);
 }

@@ -3,28 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/07 23:09:01 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/13 10:02:16 by pfournet         ###   ########.fr       */
+/*   Created: 2014/11/08 14:44:59 by achazal           #+#    #+#             */
+/*   Updated: 2015/01/03 00:44:14 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-void ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	t_list		*tmp;
 	t_list		*next;
 
-	tmp = *alst;
-	while (tmp->next != NULL)
+	while (alst && *alst)
 	{
-		(*del)(tmp->content, tmp->content_size);
-		next = tmp->next;
-		free(tmp);
-		tmp = next;
-		alst = NULL;
+		next = (*alst)->next;
+		ft_lstdelone(alst, del);
+		*alst = next;
 	}
 }

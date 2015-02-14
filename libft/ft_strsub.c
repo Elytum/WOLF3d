@@ -3,34 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/06 08:12:45 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/12 16:04:36 by paul             ###   ########.fr       */
+/*   Created: 2014/11/06 05:29:53 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/23 01:01:39 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char			*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char		*ret;
-	size_t		y;
-	size_t		i;
+	char		*new;
+	size_t		c;
 
-	y = 0;
-	i = ft_strlen(s);
-	if ((ret = (char *)malloc(sizeof(char) * (len + 1))) == NULL)
-		return (NULL);
-	if (!i || len > i || start > i)
-		return (NULL);
-	while (y < len)
+	c = 0;
+	if (s)
 	{
-		ret[y] = s[start];
-		y++;
-		start++;
+		if (!(new = ft_strnew(len)))
+			return (NULL);
+		c = 0;
+		while (c < len)
+		{
+			new[c] = s[start + c];
+			c++;
+		}
+		return (new);
 	}
-	ret[y] = '\0';
-	return (ret);
+	return (NULL);
 }

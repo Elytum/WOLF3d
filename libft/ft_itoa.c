@@ -3,55 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/07 09:15:55 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/12 15:47:51 by paul             ###   ########.fr       */
+/*   Created: 2014/11/04 17:45:25 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/10 14:07:07 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void		ft_insert_nb(char *s, size_t id, int n)
+char		*ft_itoa(int n)
 {
-	if (n >= 10 || n <= -10)
-	{
-		if (n > 0)
-			s[id] = (n % 10) + '0';
-		else
-			s[id] = -(n % 10) + '0';
-		ft_insert_nb(s, id - 1, n / 10);
-	}
-	else
-	{
-		if (n > 0)
-			s[id] = n + '0';
-		else
-			s[id] = -n + '0';
-	}
-}
-
-char			*ft_itoa(int n)
-{
-	char		*ret;
-	size_t		len_nb;
+	char	*str;
+	int		pos;
 	int		tmp;
 
+	pos = 0;
 	tmp = n;
-	len_nb = 1;
-	while (tmp /= 10)
-		len_nb++;
-	ret = ft_strnew(len_nb + (n < 0 ? 2 : 1));
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if (n == 0)
+		return (ft_strdup("0"));
+	if (!(str = (char *)malloc(sizeof(char) * 12)))
+		return (NULL);
 	if (n < 0)
+		n *= -1;
+	while (n > 0)
 	{
-		ret[0] = '-';
-		ft_insert_nb(&ret[1], len_nb - 1, n);
+		str[pos++] = (n % 10) + 48;
+		n = n / 10;
 	}
-	else
-		ft_insert_nb(ret, len_nb - 1, n);
-	if (n < 0)
-		ret[len_nb + 1] = '\0';
-	else
-		ret[len_nb] = '\0';
-	return (ret);
+	str[pos] = '\0';
+	if (tmp < 0)
+		str[pos++] = '-';
+	str[pos] = '\0';
+	return (ft_strrev(str));
 }

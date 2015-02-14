@@ -142,7 +142,7 @@ static void ft_drawfloor(t_env *e)
         e->floortexy = (int)(e->currentfloory * (e->text)[texnum].height) % (e->text)[texnum].height;
         
         color = ft_getxpmcolor((e->text)[texnum].ptr + e->text->size_line * e->floortexy + (e->text->bpp / 8) * e->floortexx);
-        // ft_put_pixel_to_screen(e, e->x, y, (color >> 1) & 0x7F7F7F);
+        ft_put_pixel_to_screen(e, e->x, y, (color >> 1) & 0x7F7F7F);
         // ft_put_pixel_to_screen(e, e->x, HEIGHT - y, (color >> 1) & 0x7F7F7F);
         y++;
 	}

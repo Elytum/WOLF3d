@@ -3,25 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/06 09:59:22 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/12 16:00:46 by paul             ###   ########.fr       */
+/*   Created: 2014/11/06 02:40:44 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/26 00:14:58 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char					*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t		i;
-	char		*ret;
+	register char		*str;
+	register char		*ptr;
 
-	i = ft_strlen(s1) + ft_strlen(s2);
-	if ((ret = (char *)malloc(sizeof(char) * (i + 1))) == NULL)
+	if (s1 && !s2)
+		return (ft_strdup(s1));
+	else if (!s1 && s2)
+		return (ft_strdup(s2));
+	else if (!s1)
 		return (NULL);
-	ft_strcpy(ret, s1);
-	ft_strcat(ret, s2);
-	return (ret);
+	if (!(str = (char *)malloc(sizeof(char) * \
+		(ft_strlen(s1) + ft_strlen(s2) + 1))))
+		return (NULL);
+	ptr = str;
+	while (*s1)
+		*ptr++ = *s1++;
+	while (*s2)
+		*ptr++ = *s2++;
+	*ptr = '\0';
+	return (str);
 }

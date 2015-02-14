@@ -25,17 +25,12 @@ int		main(void)
 
 	if ((e = (t_env *)ft_memalloc(sizeof(t_env))) == NULL)
 		return (0);
-//	ft_read("blabla.map", e);
 	get_map(e);
 	e->mlx = mlx_init();
 	e->win = mlx_new_window(e->mlx, WIDTH, HEIGHT, "Wolf-3D");
   	e->text = (t_text *)malloc(sizeof(t_text));
 	ft_init_env(e);
   	*(e->text) = ft_getimg(e, "briques.xpm");
- //  	printf("Sizes = %i %i", (*(e->text)).width, (*(e->text)).height);
-	// ft_update_img(e, testimg);
- //  	mlx_put_image_to_window(e->mlx, e->win, (*(e->text)).img, 0, 0);
- //  	sleep (10);
 	mlx_expose_hook(e->win, expose_hook, e);
 	mlx_mouse_hook(e->win, ft_click, e);
 	mlx_hook(e->win, 2, 3, ft_updatekey, e);

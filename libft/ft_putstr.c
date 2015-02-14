@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/03 14:12:33 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/13 10:00:27 by pfournet         ###   ########.fr       */
+/*   Created: 2014/11/04 17:43:02 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/07 04:56:11 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,5 @@
 
 void ft_putstr(char const *s)
 {
-	char *c;
-
-	c = (char *)s;
-	while (*c)
-	{
-		ft_putchar(*c);
-		c++;
-	}
+	ft_putstr_fd(s, 1);
 }

@@ -3,36 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/05 09:03:02 by pfournet          #+#    #+#             */
-/*   Updated: 2014/11/12 16:03:44 by paul             ###   ########.fr       */
+/*   Created: 2014/11/03 20:07:01 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/13 20:06:32 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char *ft_strnstr(const char *s1, const char *s2, size_t n)
+char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 {
-	size_t		i;
-	size_t		y;
-	char		*ret;
+	size_t	i;
 
 	i = 0;
-	y = 0;
-	if (!*s2)
+	if (!ft_strlen(s2))
 		return ((char *)s1);
-	while (s1[i] && i < n)
+	if (ft_strlen(s2) > ft_strlen(s1))
+		return (NULL);
+	while (s1[i] && s2[i] && n--)
 	{
-		while (s1[i] != s2[y] && s1[i])
+		i = 0;
+		while (s2[i] != '\0' && s1[i] == s2[i] && (n - i + 1) > 0)
 			i++;
-		ret = (char *)&s1[i];
-		while (s1[i] == s2[y] && s1[i] && s2[y] && i < n)
-			i++, y++;
-		if (!s2[y])
-			return (ret);
-		else
-			y = 0;
+		if (!s2[i])
+			return ((char *)s1);
+		s1++;
 	}
 	return (NULL);
 }
