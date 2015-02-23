@@ -88,7 +88,8 @@ SOURCE = ft_atoi.c \
 		ft_iseven.c \
 		ft_isodd_digit.c \
 		ft_iseven_digit.c \
-		ft_isword.c
+		ft_isword.c \
+		get_next_line.c
 
 OBJ = $(SOURCE:.c=.o)
 
